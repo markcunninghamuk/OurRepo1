@@ -1,0 +1,40 @@
+﻿@using Ajay.Legend.App.Models
+@model SheepModel
+@addTagHelper *, Defra.Cdp.Gds
+@{
+    ViewData["Title"] = "Edit sheep";
+}
+
+<h1 class="govuk-heading-xl">
+    Edit sheep
+</h1>
+
+<form method="post" action="/Sheep/EditSheep">
+
+    <gds-error-summary></gds-error-summary>
+
+    <gds-text-input asp-for="@Model.FirstName"></gds-text-input>
+
+    <gds-text-input asp-for="@Model.LastName"></gds-text-input>
+
+    <gds-text-input asp-for="@Model.ImageUrl"></gds-text-input>
+
+    @if (!string.IsNullOrEmpty(@Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" style="width:250px;height:250px;">
+    }
+
+    <gds-radio-group asp-for="@Model.ColourType" asp-options="SheepModel.ColourTypeOptions"></gds-radio-group>
+
+    <gds-checkbox-group asp-for="@Model.VisualAttributes" asp-options="SheepModel.VisualAttributesOptions"></gds-checkbox-group>
+
+    <gds-text-area asp-for="@Model.MedicalHistory"></gds-text-area>
+
+    <input type="hidden" id="id" name="id" value="@Model.Id" />
+
+    <div class="govuk-button-group">
+        <gds-button asp-label="Save"></gds-button>
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" formaction="/Sheep/Sheeps">Cancel</button>
+    </div>
+
+</form>

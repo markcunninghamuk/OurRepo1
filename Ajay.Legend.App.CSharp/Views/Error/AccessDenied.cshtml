@@ -1,0 +1,16 @@
+﻿@model ErrorRedirectViewModel
+
+<div class="govuk-!-padding-bottom-4">
+    <gds-h1 class="text-danger">You are not allowed to access this page</gds-h1>
+</div>
+
+<gds-p>If you typed the web address, check it is correct.</gds-p>
+
+<gds-p>If you pasted the web address, check you copied the entire address.</gds-p>
+
+<gds-p>If you believe that you should be able to access this page you can:</gds-p>
+<ul class="govuk-list govuk-list--bullet">
+    <li><a href="@Model.RedirectUri">try again</a></li>
+    <li><a href="/">return to the homepage</a> and try again</li>
+    <li><a href="mailto:@Model.ContactEmailAddress">contact the @Model.ContactDescription</a></li>
+</ul>

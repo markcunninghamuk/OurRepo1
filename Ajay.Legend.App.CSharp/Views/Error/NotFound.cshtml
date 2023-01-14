@@ -1,0 +1,16 @@
+﻿@model ErrorRedirectViewModel
+@using Ajay.Legend.App.CSharp.Models
+
+<h1 class="govuk-heading-m text-danger">Page not found</h1>
+
+<p class="govuk-body">If you typed the web address, check it is correct.</p>
+
+<p class="govuk-body">If you pasted the web address, check you copied the entire address.</p>
+
+<p class="govuk-body">If you believe that you should be able to access this page you can:</p>
+
+<ul class="govuk-list govuk-list--bullet">
+    <li><a href="@Model.RedirectUri">try again</a></li>
+    <li><a href="/">return to the homepage</a> and try again</li>
+    <li><a href="mailto:@Model.ContactEmailAddress">contact the @Model.ContactDescription</a></li>
+</ul>

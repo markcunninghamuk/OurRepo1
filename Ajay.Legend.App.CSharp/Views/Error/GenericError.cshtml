@@ -1,0 +1,12 @@
+﻿@model ErrorViewModel
+
+<h1 class="govuk-heading-m text-danger">
+    Sorry, there is a problem with the service
+</h1>
+
+<p class="govuk-body">If the error persists, <a href="mailto:@Model.ContactEmailAddress">contact the @Model.ContactDescription</a>.</p>
+
+@if (Model.ShowRequestId)
+{
+    <p class="govuk-body">For reference, your request id was @Model.RequestId.</p>
+}

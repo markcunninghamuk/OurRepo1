@@ -1,0 +1,12 @@
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration
+
+@{
+    var emailAddress = configuration.GetValue("Feedback:ContactEmailAddress", String.Empty);
+}
+<h1 class="govuk-heading-xl">Get in touch</h1>
+
+<p class="govuk-body">If you've got a question, idea or suggestion get in touch with the Core Delivery Platform Team.</p>
+
+<h2 class="govuk-heading-m">Email</h2>
+<p class="govuk-body">Email the Core Delivery Platform Team on <a href="mailto:@emailAddress">@emailAddress</a></p>

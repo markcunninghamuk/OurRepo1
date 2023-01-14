@@ -1,0 +1,25 @@
+﻿@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<h1 id="welcomeBanner" class="govuk-heading-xl">
+    @Model.HeaderText
+</h1>
+
+
+<p class="govuk-body">Make your service look and feel like GOV.UK.</p>
+
+<p class="govuk-body">This template has the following areas of functionality already built in:
+    <ul>
+        <li class="govuk-body">GDS form elements - fed from govuk-frontend, and uses helper tags for easier development</li>
+        <li class="govuk-body">Integrated with App Config Service and Key Vault for configuration values and secrets</li>
+        <li class="govuk-body">Logging streams - sanitised logs as default. Can dynamically enable diagnostic logging</li>
+        <li class="govuk-body">Integration with DB - currently SQL Server</li>
+        <li class="govuk-body">Log in through Defra Customer Identity - in progress</li>
+        <li class="govuk-body">Monitoring and alerting - to do</li>
+        <li class="govuk-body">Data change auditing - to do</li>
+    </ul>
+    
+</p>

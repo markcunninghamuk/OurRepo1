@@ -1,0 +1,13 @@
+﻿
+
+The Open Government Licence v3.0
+
+Copyright (c) 2022 Defra
+
+Unless stated otherwise, the codebase is released under [Open Government Licence v3.0][ogl].
+
+The documentation is [© Crown copyright][copyright] and available under the terms
+of the [Open Government Licence v3.0][ogl] licence.
+
+[ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+[copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/

@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>b1414bd1-7301-43d4-bc85-caa341f08339</UserSecretsId>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\net6.0\CoreDeliveryPlatform.xml</DocumentationFile>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>npm run build</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'HelloWorld' " />
+  <ItemGroup>
+    <None Remove="Microsoft.ApplicationInsights.AspNetCore" />
+    <None Remove="Defra.Cdp.Telemetry" />
+    <None Remove="Microsoft.Identity.Web" />
+    <None Remove="Config\" />
+    <None Remove="Microsoft.Azure.AppConfiguration.AspNetCore" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+    <None Remove="Azure.Identity" />
+    <None Remove="Defra.Cdp.HealthCheck" />
+    <None Remove="Defra.Cdp.Gds" />
+    <None Remove="Views\LoggingTest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.25.10" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.25.10" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="5.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.11" />
+    <PackageReference Include="Azure.Identity" Version="1.8.0" />
+    <PackageReference Include="Defra.Cdp.HealthCheck" Version="0.1.2" />
+    <PackageReference Include="Defra.Cdp.Telemetry" Version="1.0.7" />
+    <PackageReference Include="Defra.Cdp.Gds" Version="0.1.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="wwwroot\scss\" />
+    <Folder Include="Views\LoggingTest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\scss\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ajay.Legend.App.Services\Ajay.Legend.App.Services.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Ajay.Legend.App.Models\Ajay.Legend.App.Models.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

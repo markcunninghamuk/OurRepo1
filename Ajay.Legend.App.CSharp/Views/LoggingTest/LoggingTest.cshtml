@@ -1,0 +1,82 @@
+﻿@model LoggingTestViewModel
+@addTagHelper *, Defra.Cdp.Gds
+@{
+    ViewData["Title"] = "Logging Test";
+}
+
+
+<h1 id="welcomeBanner" class="govuk-heading-xl">
+    Log tests
+</h1>
+
+<gds-error-summary></gds-error-summary>
+
+<p class="govuk-body">This page can be used to test the logging facilities within the Exemplar app.</p>
+
+<p class="govuk-body">
+    The following logs streams are handled:
+    <ul>
+        <li class="govuk-body"><b>Standard logging</b> - all log text is sanitised to remove any potential Personal Identifiable Information (PII). Any exceptions are sanitised and stripped to a single line.</li>
+        <li class="govuk-body"><b>Full exception logging</b> - any exceptions are recorded in their entirety (including a full stack trace). No data is sanitised so may contain PII.</li>
+        <li class="govuk-body"><b>Debug/diagnostic logging</b> - any log text remains unsanitised (may contain PII). However, debug logging can only be performed for a maximum of 4 hours before it automatically turns off.</li>
+    </ul>
+</p>
+
+<p class="govuk-body">
+    The above streams are protected according to the sensitivity level of the information they hold. That is:
+    <ul>
+        <li class="govuk-body"><b>Standard logging</b> - accessible to developers.</li>
+        <li class="govuk-body"><b>Full exception logging</b> - only accessible to developers under break-glass conditions where elevated permissions have been explicitly granted on a temporary basis.</li>
+        <li class="govuk-body"><b>Debug/diagnostic logging</b> - only accessible to developers under break-glass conditions where elevated permissions have been explicitly granted on a temporary basis.</li>
+    </ul>
+</p>
+
+<p class="govuk-body">&nbsp;</p>
+
+<form method="post" action="/LoggingTest/LoggingTest">
+
+    <h2 class="govuk-heading-m">Standard log message</h2>
+
+    <p class="govuk-body">These log messages get sanitised and sent to the standard logging stream.</p>
+
+    <input type="hidden" name="action" value="standard" />
+
+    <gds-text-input asp-for="@Model.StandardMessage"></gds-text-input>
+
+    <gds-button asp-label="Send standard log message"></gds-button>
+
+    <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="@Model.StandardLoggerViewerUrl" target="_blank">View standard log (opens in new tab)</a></p>
+
+</form>
+
+<form method="post" action="/LoggingTest/LoggingTest">
+
+    <h2 class="govuk-heading-m">Raise an exception</h2>
+
+    <p class="govuk-body">A sanitised minimal exception gets sent to the standard stream, and a full non-sanitised exception gets sent to the full exception logging stream.</p>
+
+    <input type="hidden" name="action" value="exception" />
+
+    <gds-text-input asp-for="@Model.ExceptionText"></gds-text-input>
+
+    <gds-button asp-label="Raise exception"></gds-button>
+
+    <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="@Model.ExceptionLoggerViewerUrl" target="_blank">View full exception log (opens in new tab)</a></p>
+
+</form>
+
+<form method="post" action="/LoggingTest/LoggingTest">
+
+    <h2 class="govuk-heading-m">Debug logging</h2>
+
+    <p class="govuk-body">These log messages are not sanitised and sent to the debug logging stream. Note - debug logging must be activated by setting an appropriate start date in the environment's App Configuration service, and debug logging is only active for a maximum of 4 hours.</p>
+
+    <input type="hidden" name="action" value="debug" />
+
+    <gds-text-input asp-for="@Model.DebugMessage"></gds-text-input>
+
+    <gds-button asp-label="Send debug log message"></gds-button>
+
+    <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="@Model.DebugLoggerViewerUrl" target="_blank">View debug log (opens in new tab)</a></p>
+
+</form>

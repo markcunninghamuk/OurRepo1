@@ -1,0 +1,59 @@
+﻿@using Defra.Cdp.Telemetry.Config;
+@inject CookieConfig config
+
+@{ var isOnCookieSettings = Context.Request.Path == "/cookie-settings";
+    var showCookieConfirmation = config.IsSet && Context.Request.Query["cookie-confirmation"].ToString() != "";
+
+    var showCookieBanner = !isOnCookieSettings && !config.IsSet && !showCookieConfirmation;
+    var serviceName = ViewData["ServiceName"];
+}
+
+@if (showCookieBanner)
+{
+    <div class="govuk-cookie-banner " data-nosnippet role="region" aria-label="Cookies on @serviceName">
+        <div class="govuk-cookie-banner__message govuk-width-container">
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-cookie-banner__heading govuk-heading-m">Cookies on @serviceName</h2>
+
+                    <div class="govuk-cookie-banner__content">
+                        <p class="govuk-body">We use some essential cookies to make this service work.</p>
+                        <p class="govuk-body">We'd also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-controller="Cookie" asp-action="SetCookies" asp-method="post" asp-novalidate>
+                @Html.Hidden("redirectUri", Context.Request.Path)
+                <div class="govuk-button-group">
+                    <button value="accept" type="submit" name="cookies" class="govuk-button" data-module="govuk-button">
+                        Accept analytics cookies
+                    </button>
+                    <button value="reject" type="submit" name="cookies" class="govuk-button" data-module="govuk-button">
+                        Reject analytics cookies
+                    </button>
+                    <a class="govuk-link" href="/cookie/cookie-settings">View cookies</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+}
+
+@if (showCookieConfirmation)
+{
+    <div id="cookie-message" class="govuk-cookie-banner" role="region" aria-label="cookie banner">
+        <div class="govuk-cookie-banner__message govuk-width-container" tabindex="-1">
+            <p class="govuk-body" role="alert">Your cookie settings have been saved. You can <a class="govuk-link" href="/cookie/cookie-settings">change your cookie settings</a> at any time.</p>
+            <form asp-controller="Cookie" asp-action="HideCookieConfirmation" asp-method="post" novalidate>
+                @Html.Hidden("redirectUri", Context.Request.Path)
+                <div class="govuk-button-group">
+                    <button value="hide" type="submit" name="cookies" class="govuk-button" data-module="govuk-button">
+                        Hide this message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

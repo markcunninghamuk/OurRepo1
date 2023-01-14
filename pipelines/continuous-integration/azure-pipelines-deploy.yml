@@ -1,0 +1,143 @@
+trigger:
+- develop
+
+resources:
+- repo: self
+
+variables:
+  appName: 'defra-cdp-exemplar-csharp'
+  appVersion: '$(appName)v1'
+  imageRepository: 'defra-cdp-exemplar-csharp'
+  containerRegistryShortName: 'devcdpinfcr1401'
+  containerRegistryFullName: '$(containerRegistryShortName).azurecr.io'
+  subscriptionName: 'AZD-CDP-DEV1'
+  keyVaultName: 'DEVCDPINFKV1401'
+  aksClusterName: 'DEVCDPINFAK1401'
+  resourceGroupName: 'DEVCDPINFRG1402'
+  tenantId: 'c9d74090-b4e6-4b04-981d-e6757a160812'
+  dockerFilePath: 'Ajay.Legend.App.CSharp/Dockerfile'
+  namespace: 'default'
+  tag: $(build.buildId)
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool: DEFRA-TRD
+    steps:
+    - task: Bash@3
+      displayName: Configure SSL
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Using the default of openssl gives SSL cert errors due to CA roots not being installed
+          git config --global http.sslbackend schannel
+
+    - checkout: self
+
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: $(subscriptionName)
+        KeyVaultName: $(keyVaultName)
+        SecretsFilter: '*'
+
+    - task: HelmInstaller@0
+      inputs:
+        helmVersion: '2.14.1'
+        installKubectl: true
+
+    - task: HelmDeploy@0
+      displayName: 'Build helm chart'
+      inputs:
+        command: 'package'
+        chartPath: '$(Build.SourcesDirectory)/helm'
+        chartVersion: '$(tag)'
+
+    - task: AzurePowerShell@5
+      displayName: 'Build and publish helm chart and container image to Azure Container Registry'
+      inputs:
+        azureSubscription: $(subscriptionName)
+        ScriptType: 'InlineScript'
+        Inline: |
+          az login --service-principal -u $(adoSpClientId) -p $(adoSpClientSecret) --tenant $(tenantId)
+          cd $(Build.SourcesDirectory)
+          az acr build --image $(containerRegistryFullName)/$(appName):$(tag) --registry $(containerRegistryFullName) --platform 'linux/amd64' --build-arg INTERNAL_FEED_ACCESSTOKEN=$(adoInternalFeedAccessToken) --file $(dockerFilePath) .
+          az aks update -n $(aksClusterName) -g $(resourceGroupName) --attach-acr $(containerRegistryShortName)
+          exit $LastExitCode
+        azurePowerShellVersion: 'LatestVersion'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+    displayName: Deploy
+    pool: DEFRA-TRD
+    environment: 'DEV'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+
+          - task: HelmInstaller@0
+            inputs:
+              helmVersion: '2.14.1'
+              installKubectl: true
+          - task: AzureCLI@2
+            displayName: Login to AKS using kubelogin
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                set -e
+                az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName) --overwrite-existing
+                # Pass kubeconfig to kubelogin to access k8s API
+                kubelogin convert-kubeconfig -l azurecli
+                # confirm it works
+                kubectl get pods --namespace default
+                echo "##vso[task.setvariable variable=KUBECONFIG]${KUBECONFIG}"
+          - task: AzureKeyVault@2
+            displayName: 'Azure Key Vault: DEVCDPINFKV1401'
+            inputs:
+              azureSubscription: $(subscriptionName)
+              KeyVaultName: $(keyVaultName)
+          - task: Bash@3
+            displayName: Login to AKS using kubelogin
+            inputs:
+              targetType: 'inline'
+              script: |
+                set -e
+                az login --service-principal -u $(adoSpClientId) -p $(adoSpClientSecret) --tenant $(tenantId)
+                az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName) --overwrite-existing
+                # Pass kubeconfig to kubelogin to access k8s API
+                kubelogin convert-kubeconfig -l azurecli
+                echo "##vso[task.setvariable variable=KUBECONFIG]${KUBECONFIG}"
+          - task: HelmDeploy@0
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscription: $(subscriptionName)
+              azureResourceGroup: $(resourceGroupName)
+              kubernetesCluster: $(aksClusterName)
+              serviceAccountName: 
+              namespace: $(namespace)
+              command: 'upgrade'
+              install: true
+              waitForExecution: false
+              chartType: 'FilePath'
+              chartPath: '$(pipeline.workspace)/drop/helm-$(tag).tgz'
+              releaseName: $(appName)
+              arguments: 
+                --kubeconfig C:\Windows\ServiceProfiles\NetworkService\.kube\config
+                --set image.tag=$(tag)

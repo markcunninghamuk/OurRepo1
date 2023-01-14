@@ -1,0 +1,124 @@
+﻿<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+
+            <a href="/" rel="noreferrer" class="govuk-back-link">Back</a>
+
+            <form asp-controller="Help" asp-action="CookiePolicy" asp-method="post" novalidate>
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" role="group">
+                        <h1 class="govuk-heading-l">Cookie policy</h1>
+                        <p class="govuk-body">
+                            This service puts small files (known as ‘cookies’) on
+                            your phone, tablet or computer to collect information about how you browse
+                            the website. Find out more about the cookies we use, what they are for and
+                            when they expire.
+                        </p>
+                        <h2 class="govuk-heading-m">Cookies message</h2>
+                        <p class="govuk-body">
+                            When you first use the service we show a message inviting you to accept
+                            cookies or review your settings. We’ll set cookies so that your computer
+                            knows you have seen the message and not to show it again, and also to store
+                            your settings.
+                        </p>
+
+                        <table class="govuk-table govuk-!-margin-bottom-7">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Name</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Purpose</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expires</th>
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">CookieSettings</td>
+                                    <td class="govuk-table__cell">Stores your cookie settings</td>
+                                    <td class="govuk-table__cell">1 year</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2 class="govuk-heading-m">Strictly necessary cookies</h2>
+                        <p class="govuk-body">
+                            When you use the service, we set cookies to remember the answers you give
+                            to the questions. This is so that we can give you relevant information based
+                            on your answers.
+                        </p>
+
+                        <table class="govuk-table govuk-!-margin-bottom-7">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Name</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Purpose</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expires</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">.AspNetCore.Antiforgery.*
+                                    <td class="govuk-table__cell">Ensures the details you submitted on a page came from the expected session</td>
+                                    <td class="govuk-table__cell">At the end of your session</td>
+                                </tr>
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">.AspNetCore.Cookies*
+                                    <td class="govuk-table__cell">Used to facilitate sign in</td>
+                                    <td class="govuk-table__cell">At the end of your session</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2 class="govuk-heading-m">Cookies that measure website use</h2>
+                        <p class="govuk-body">
+                            We use Application Insights to collect anonymised information about how you
+                            use this service so we can improve it.
+                        </p>
+                        <p class="govuk-inset-text">
+                            Microsoft is not allowed to use or share the data about how you use the
+                            service.
+                        </p>
+                        <p class="govuk-body">
+                            Application Insights stores information about:
+                        </p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>how you got to the site</li>
+                            <li>pages you visit and how long you spend on them</li>
+                            <li>what you click on while you’re visiting the site</li>
+                        </ul>
+                        <p class="govuk-body">
+                            No personal details are stored with this information, so you cannot be
+                            identified.
+                        </p>
+                        <p class="govuk-body">
+                            Application Insights sets the following cookies.
+                        </p>
+                        <table class="govuk-table govuk-!-margin-bottom-7">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Name</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Purpose</th>
+                                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Expires</th>
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">ai_session</td>
+                                    <td class="govuk-table__cell">Helps us recognise actions as part of the same session</td>
+                                    <td class="govuk-table__cell">At the end of your session</td>
+                                </tr>
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">ai_user</td>
+                                    <td class="govuk-table__cell">Helps us recognise users anonymously on returning visits over time</td>
+                                    <td class="govuk-table__cell">1 year</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2 class="govuk-heading-m">Change your settings</h2>
+                        <p class="govuk-body">You can <a href="/cookie/cookie-settings" rel="noreferrer" class="govuk-link">change which cookies you’re happy for us to use</a>.</p>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

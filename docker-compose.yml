@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ajay.legend.app.csharp:
+    image: ${DOCKER_REGISTRY-}defracdpexemplar
+    build:
+      context: .
+      dockerfile: Ajay.Legend.App.CSharp/Dockerfile

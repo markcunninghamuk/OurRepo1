@@ -1,0 +1,14 @@
+@using Microsoft.Identity.Web
+@if (User.Identity.IsAuthenticated)
+{
+    <ul id="navigation2" class="govuk-header__navigation-list govuk-header__navigation--right">
+        <li class="govuk-header__navigation-item">@User.GetDisplayName()</li>
+        <li class="govuk-header__navigation-item"><a class="govuk-header__link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></li>
+    </ul>
+}
+else
+{
+    <ul id="navigation2" class="govuk-header__navigation-list govuk-header__navigation--right">
+        <li class="govuk-header__navigation-item"><a class="govuk-header__link" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a></li>
+    </ul>
+}

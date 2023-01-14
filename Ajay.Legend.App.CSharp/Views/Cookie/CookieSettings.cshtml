@@ -1,0 +1,77 @@
+﻿@model Ajay.Legend.App.CSharp.Models.CookieSettingsViewModel
+@using Ajay.Legend.App.CSharp.Models
+
+@{
+    var cookieSelectedOn = Model.Config.IsSet && Model.Config.AllowWebsiteUseCookies ? "checked=\"checked\"" : string.Empty;
+    var cookieSelectedOff = Model.Config.IsSet && !Model.Config.AllowWebsiteUseCookies ? "checked=\"checked\"" : string.Empty;
+}
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+
+            <a href="/" class="govuk-back-link">Back</a>
+
+            <form method="post" novalidate>
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" role="group">
+                        <h1 class="govuk-heading-l">Cookie settings</h1>
+                        <p class="govuk-body">
+                            Cookies are small files saved on your phone, tablet or computer when you
+                            visit a website.
+                        </p>
+                        <div class="govuk-inset-text">
+                            <p class="govuk-body">
+                                The cookies do not identify you personally. You can still apply for an equity
+                                loan if you do not accept cookies that measure website use.
+                            </p>
+                        </div>
+                        <h2 class="govuk-heading-m">Strictly necessary cookies</h2>
+                        <p class="govuk-body">
+                            These essential cookies do things like:
+                        </p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>remember the notifications you've seen so we do not show them to you again</li>
+                            <li>facilitate login/logout</li>
+                        </ul>
+                        <p class="govuk-body">
+                            They always need to be on.
+                        </p>
+                        <h2 class="govuk-heading-m">Cookies that measure website use</h2>
+                        <p class="govuk-body">
+                            We use Application Insights to collect information about how you use this
+                            service so we can improve it.
+                        </p>
+                        <p class="govuk-body">
+                            Application Insights stores information about:
+                        </p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>how you got to the site</li>
+                            <li>pages you visit and how long you spend on them</li>
+                            <li>what you click on while you re visiting the site</li>
+                        </ul>
+                        <p class="govuk-body">
+                            No personal details are stored with this information, so you cannot be
+                            identified.
+                        </p>
+                        <div class="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input type="radio" name="Config.AllowWebsiteUseCookies" id="radio-cookie-0" value="true" class="govuk-radios__input" @cookieSelectedOn>
+                                <label for="radio-cookie-0" class="govuk-label govuk-radios__label">Use cookies that measure my website use</label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input type="radio" name="Config.AllowWebsiteUseCookies" id="radio-cookie-1" value="false" class="govuk-radios__input" @cookieSelectedOff>
+                                <label for="radio-cookie-1" class="govuk-label govuk-radios__label">Do not use cookies that measure my website use</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <button class="govuk-button" data-module="govuk-button">
+                    Save changes
+                </button>
+                <br />
+                <p class="govuk-body"><a href="/cookie/cookie-policy" rel="noreferrer" class="govuk-link">Find out more about cookies in our cookie policy</a></p>
+            </form>
+        </div>
+    </div>
+</main>

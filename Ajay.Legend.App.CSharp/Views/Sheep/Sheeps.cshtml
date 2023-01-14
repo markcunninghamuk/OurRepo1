@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Ajay.Legend.App.Models.SheepModel>
+@addTagHelper *, Defra.Cdp.Gds
+@using Defra.Cdp.Gds.Models;
+@{
+    ViewData["Title"] = "Sheeps";
+    var tableMetadata = new GdsTableMetadata(
+        "Sheeps", 
+        new List<GdsTableColumn> {
+            new GdsTableColumn("First name"),
+            new GdsTableColumn("Last name"),
+            new GdsTableColumn("Thumbnail"),
+            new GdsTableColumn("Action")
+        }
+    );
+
+    var tableData = new List<string[]>();
+    @if (Model != null)
+    {
+        foreach (var sheep in Model)
+        {
+            var row = new List<string>();
+            var editUrl = $"/Sheep/EditSheep?id={sheep.Id}";
+            var deleteUrl = $"/Sheep/DeleteSheep?id={sheep.Id}";
+            row.Add(sheep.FirstName);
+            row.Add(sheep.LastName);
+            row.Add(!string.IsNullOrEmpty(sheep.ImageUrl)
+                ? $"<img src=\"{sheep.ImageUrl}\" style=\"width:50px; height:50px\" />"
+                : string.Empty);
+            row.Add($"<a class=\"govuk-link govuk-link--no-visited-state\" href=\"{editUrl}\">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"govuk-link govuk-link--no-visited-state\" href=\"{deleteUrl}\">Delete</a>");
+            tableData.Add(row.ToArray());
+        }
+    }
+}
+
+<h1 class="govuk-heading-xl">
+    Sheeps
+</h1>
+
+<gds-table asp-metadata="@tableMetadata" asp-data="@tableData"></gds-table>
+
+<form method="get" action="/Sheep/EditSheep">
+
+    <gds-button asp-type="secondary" asp-label="Add sheep"></gds-button>
+
+</form>
+
